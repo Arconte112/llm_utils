@@ -13,7 +13,7 @@ datasets:
   - path: json
     type: completion
     field: text
-    data_files:/workspace/train.yml 	
+    data_files:/workspace/texto.yml 	
 
 val_set_size: 0.3
 output_dir: ./qlora-out

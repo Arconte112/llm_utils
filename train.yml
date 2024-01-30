@@ -4,7 +4,6 @@ tokenizer_type: LlamaTokenizer
 is_mistral_derived_model: true
 hub_model_id: dominican-v0.1-7b
 
-
 load_in_8bit: false
 load_in_4bit: true
 strict: false
@@ -13,13 +12,13 @@ datasets:
   - path: json
     type: completion
     field: text
-    data_files:/workspace/texto.yml 	
+    data_files: /workspace/texto.yml  # Asegúrate de que no hay espacios o tabulaciones extras antes o después de los dos puntos
 
 val_set_size: 0.3
 output_dir: ./qlora-out
 
 adapter: qlora
-lora_model_dir:
+lora_model_dir:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
 
 sequence_len: 2048
 sample_packing: true
@@ -28,7 +27,7 @@ lora_r: 32
 lora_alpha: 16
 lora_dropout: 0.05
 lora_target_linear: true
-lora_fan_in_fan_out:
+lora_fan_in_fan_out:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
 lora_target_modules:
   - gate_proj
   - down_proj
@@ -39,10 +38,10 @@ lora_target_modules:
   - o_proj
 
 wandb_project: dominican-v0.1-7b
-wandb_entity:
-wandb_watch:
-wandb_name:
-wandb_log_model:
+wandb_entity:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+wandb_watch:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+wandb_name:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+wandb_log_model:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
 
 gradient_accumulation_steps: 1
 micro_batch_size: 2
@@ -58,18 +57,18 @@ fp16: false
 tf32: false
 
 gradient_checkpointing: true
-early_stopping_patience:
-resume_from_checkpoint:
-local_rank:
+early_stopping_patience:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+resume_from_checkpoint:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+local_rank:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
 logging_steps: 1
 xformers_attention:
 flash_attention: true
 
 eval_steps: 0.01
 save_strategy: epoch
-save_steps:
-debug:
-deepspeed:
+save_steps:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+debug:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+deepspeed:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
 weight_decay: 0.0
-fsdp:
-fsdp_config:
+fsdp:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+fsdp_config:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor

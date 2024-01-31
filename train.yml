@@ -2,7 +2,7 @@ base_model: mistralai/Mistral-7B-v0.1
 model_type: MistralForCausalLM
 tokenizer_type: LlamaTokenizer
 is_mistral_derived_model: true
-hub_model_id: dominican-v0.2-7b
+hub_model_id: dominican-v0.3-7b
 
 load_in_8bit: false
 load_in_4bit: true
@@ -37,7 +37,7 @@ lora_target_modules:
   - k_proj
   - o_proj
 
-wandb_project: dominican-v0.2-7b
+wandb_project: dominican-v0.3-7b
 wandb_entity:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
 wandb_watch:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
 wandb_name:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor

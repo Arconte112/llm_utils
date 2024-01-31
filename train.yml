@@ -2,7 +2,7 @@ base_model: mistralai/Mistral-7B-v0.1
 model_type: MistralForCausalLM
 tokenizer_type: LlamaTokenizer
 is_mistral_derived_model: true
-hub_model_id: dominican-v0.1-7b
+hub_model_id: dominican-v0.2-7b
 
 load_in_8bit: false
 load_in_4bit: true
@@ -12,9 +12,9 @@ datasets:
   - path: json
     type: completion
     field: text
-    data_files: /workspace/texto.yml  # Asegúrate de que no hay espacios o tabulaciones extras antes o después de los dos puntos
+    data_files: /workspace/texto.yml # Asegúrate de que no hay espacios o tabulaciones extras antes o después de los dos puntos
 
-val_set_size: 0.3
+val_set_size: 0.1
 output_dir: ./qlora-out
 
 adapter: qlora
@@ -44,11 +44,11 @@ wandb_name:  # Si se supone que está vacío, está bien, de lo contrario, propo
 wandb_log_model:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
 
 gradient_accumulation_steps: 1
-micro_batch_size: 2
-num_epochs: 1
+micro_batch_size: 1
+num_epochs: 10
 optimizer: adamw_bnb_8bit
 lr_scheduler: cosine
-learning_rate: 0.0002
+learning_rate: 0.0005
 
 train_on_inputs: false
 group_by_length: false

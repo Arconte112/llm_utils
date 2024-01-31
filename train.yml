@@ -12,7 +12,7 @@ datasets:
   - path: json
     type: completion
     field: text
-    data_files: /workspace/texto.yml # Asegúrate de que no hay espacios o tabulaciones extras antes o después de los dos puntos
+    data_files: /workspace/axolotl/texto.json # Asegúrate de que no hay espacios o tabulaciones extras antes o después de los dos puntos
 
 val_set_size: 0.1
 output_dir: ./qlora-out
@@ -45,10 +45,10 @@ wandb_log_model:  # Si se supone que está vacío, está bien, de lo contrario, 
 
 gradient_accumulation_steps: 1
 micro_batch_size: 1
-num_epochs: 10
+num_epochs: 20
 optimizer: adamw_bnb_8bit
 lr_scheduler: cosine
-learning_rate: 0.002
+learning_rate: 0.00002
 
 train_on_inputs: false
 group_by_length: false

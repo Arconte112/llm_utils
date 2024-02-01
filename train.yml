@@ -12,7 +12,7 @@ strict: false  # Si es true, asegura que todas las claves del modelo preentrenad
 
 # Configuraciones del conjunto de datos
 datasets:
-  - path: Arconte/spanish-sharegpt-16M  # Ruta al conjunto de datos.
+  - path: Arconte/spanish-sharegpt-60k  # Ruta al conjunto de datos.
     type: sharegpt  # Tipo de conjunto de datos.
     conversation: chatml  # Tipo de conversación, asegurarse que no haya espacios extra.
 val_set_size: 0.2  # Tamaño del conjunto de validación (% del total).

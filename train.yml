@@ -15,7 +15,7 @@ datasets:
   - path: Arconte/spanish-sharegpt-16M  # Ruta al conjunto de datos.
     type: sharegpt  # Tipo de conjunto de datos.
     conversation: chatml  # Tipo de conversación, asegurarse que no haya espacios extra.
-val_set_size: 0.3  # Tamaño del conjunto de validación (% del total).
+val_set_size: 0.2  # Tamaño del conjunto de validación (% del total).
 output_dir: ./qlora-out  # Directorio para guardar los resultados del entrenamiento.
 
 # Configuraciones del adaptador QLoRA

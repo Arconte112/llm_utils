@@ -22,7 +22,7 @@ output_dir: ./qlora-out  # Directorio para guardar los resultados del entrenamie
 # Configuraciones del adaptador QLoRA
 adapter: qlora  # Indica el uso de QLoRA para afinamiento eficiente.
 lora_model_dir:  # Directorio del modelo LoRA, si se usa uno preexistente.
-sequence_len: 2048  # Longitud de secuencia máxima.
+sequence_len: 4068  # Longitud de secuencia máxima.
 sample_packing: true  # Si está activo, empaca muestras para mejorar la eficiencia.
 
 # Hiperparámetros de QLoRA

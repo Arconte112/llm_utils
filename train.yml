@@ -74,7 +74,6 @@ flash_attention: true  # Usar atención Flash de Xformers para mayor eficiencia.
 eval_steps: 0.01  # Frecuencia de pasos para evaluación durante el entrenamiento.
 save_strategy: epoch  # Estrategia de guardado, aquí por cada época.
 save_steps:  # Número de pasos para guardar el modelo, si se especifica.
-debug:  # Modo de depuración, si se activa.
 deepspeed:  # Usar DeepSpeed para entrenamiento distribuido y optimizado.
 weight_decay: 0.0  # Decaimiento de peso para regularización.
 fsdp:  # Usar Fully Sharded Data Parallel, si se activa.

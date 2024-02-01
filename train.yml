@@ -1,34 +1,36 @@
-base_model: mistralai/Mistral-7B-v0.1
-model_type: MistralForCausalLM
-tokenizer_type: LlamaTokenizer
-is_mistral_derived_model: true
-hub_model_id: dominican-v0.3-7b
+# Configuración básica del modelo
+base_model: mistralai/Mistral-7B-v0.1  # El modelo base preentrenado a afinar.
+model_type: MistralForCausalLM  # Tipo de modelo, aquí causal para generar texto.
+tokenizer_type: LlamaTokenizer  # Tokenizador para procesar el texto.
+is_mistral_derived_model: true  # Indica si el modelo es una variante de Mistral.
+hub_model_id: mistral-spanish-v0.1-7b  # Identificador del modelo en el hub.
 
-load_in_8bit: false
-load_in_4bit: true
-strict: false
+# Configuraciones de carga del modelo
+load_in_8bit: false  # Cargar el modelo en formato de 8 bits, más ligero pero menos preciso.
+load_in_4bit: true  # Cargar en 4 bits, aún más ligero, utilizado para QLoRA.
+strict: false  # Si es true, asegura que todas las claves del modelo preentrenado se carguen.
 
+# Configuraciones del conjunto de datos
 datasets:
-  - path: json
-    type: completion
-    field: text
-    data_files: /workspace/axolotl/texto.json # Asegúrate de que no hay espacios o tabulaciones extras antes o después de los dos puntos
+  - path: Arconte/spanish-sharegpt-16M  # Ruta al conjunto de datos.
+    type: sharegpt  # Tipo de conjunto de datos.
+    conversation: chatml  # Tipo de conversación, asegurarse que no haya espacios extra.
+val_set_size: 0.3  # Tamaño del conjunto de validación (30% del total).
+output_dir: ./qlora-out  # Directorio para guardar los resultados del entrenamiento.
 
-val_set_size: 0.1
-output_dir: ./qlora-out
+# Configuraciones del adaptador QLoRA
+adapter: qlora  # Indica el uso de QLoRA para afinamiento eficiente.
+lora_model_dir:  # Directorio del modelo LoRA, si se usa uno preexistente.
+sequence_len: 2048  # Longitud de secuencia máxima.
+sample_packing: true  # Si está activo, empaca muestras para mejorar la eficiencia.
 
-adapter: qlora
-lora_model_dir:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-
-sequence_len: 2048
-sample_packing: true
-
-lora_r: 32
-lora_alpha: 16
-lora_dropout: 0.05
-lora_target_linear: true
-lora_fan_in_fan_out:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-lora_target_modules:
+# Hiperparámetros de QLoRA
+lora_r: 32  # Rango de las matrices de adaptación, relacionado con la cantidad de parámetros a entrenar.
+lora_alpha: 16  # Escala de adaptación, controla cuánto se adaptan los pesos del modelo.
+lora_dropout: 0.05  # Tasa de dropout en las capas LoRA para regularización.
+lora_target_linear: true  # Si se enfoca en adaptar las capas lineales del modelo.
+lora_fan_in_fan_out:  # Configuraciones de fan-in/fan-out, vacío indica valores predeterminados.
+lora_target_modules:  # Módulos específicos del modelo a adaptar con LoRA.
   - gate_proj
   - down_proj
   - up_proj
@@ -37,38 +39,49 @@ lora_target_modules:
   - k_proj
   - o_proj
 
-wandb_project: dominican-v0.3-7b
-wandb_entity:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-wandb_watch:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-wandb_name:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-wandb_log_model:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+# Configuraciones de Weights & Biases para monitoreo
+wandb_project: mistral-spanish-v0.1-7b  # Nombre del proyecto en Weights & Biases.
+wandb_entity:  # Entidad en Weights & Biases, si se usa.
+wandb_watch:  # Configuración de monitoreo del modelo en Weights & Biases.
+wandb_name:  # Nombre del run en Weights & Biases.
+wandb_log_model:  # Si se registra el modelo en Weights & Biases.
 
-gradient_accumulation_steps: 1
-micro_batch_size: 1
-num_epochs: 20
-optimizer: adamw_bnb_8bit
-lr_scheduler: cosine
-learning_rate: 0.00002
+# Hiperparámetros de entrenamiento
+gradient_accumulation_steps: 4  # Pasos de acumulación de gradientes para manejar tamaños de lote grandes.
+micro_batch_size: 2  # Tamaño del micro lote, parte del lote total procesado en cada paso.
+num_epochs: 3  # Número de épocas de entrenamiento.
+optimizer: adamw_bnb_8bit  # Optimizador, aquí AdamW con bitsandbytes para 8 bits.
+lr_scheduler: cosine  # Programador de tasa de aprendizaje, aquí uno que decae siguiendo una función coseno.
+learning_rate: 0.0002  # Tasa de aprendizaje inicial.
 
-train_on_inputs: false
-group_by_length: false
-bf16: true
-fp16: false
-tf32: false
+# Opciones de precisión y rendimiento
+train_on_inputs: false  # Si entrena solo en las entradas, sin incluir las etiquetas.
+group_by_length: false  # Si agrupa los datos por longitud para mejorar la eficiencia.
+bf16: true  # Utilizar formato de número flotante Brain Floating Point 16 bits.
+fp16: false  # Utilizar formato de 16 bits de punto flotante.
+tf32: false  # Utilizar formato de 32 bits de TensorFloat.
 
-gradient_checkpointing: true
-early_stopping_patience:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-resume_from_checkpoint:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-local_rank:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-logging_steps: 1
+# Funciones avanzadas de entrenamiento
+gradient_checkpointing: true  # Activa el checkpointing de gradientes para ahorrar memoria.
+early_stopping_patience:  # Número de evaluaciones sin mejora antes de detener el entrenamiento.
+resume_from_checkpoint:  # Resumir entrenamiento desde un punto de control específico.
+local_rank:  # Rango local para entrenamiento distribuido, si se usa.
+logging_steps: 1  # Frecuencia de pasos para registrar la información del entrenamiento.
 xformers_attention:
-flash_attention: true
+flash_attention: true  # Usar atención Flash de Xformers para mayor eficiencia.
 
-eval_steps: 0.01
-save_strategy: epoch
-save_steps:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-debug:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-deepspeed:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-weight_decay: 0.0
-fsdp:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
-fsdp_config:  # Si se supone que está vacío, está bien, de lo contrario, proporciona un valor
+# Evaluación y guardado
+eval_steps: 0.01  # Frecuencia de pasos para evaluación durante el entrenamiento.
+save_strategy: epoch  # Estrategia de guardado, aquí por cada época.
+save_steps:  # Número de pasos para guardar el modelo, si se especifica.
+debug:  # Modo de depuración, si se activa.
+deepspeed:  # Usar DeepSpeed para entrenamiento distribuido y optimizado.
+weight_decay: 0.0  # Decaimiento de peso para regularización.
+fsdp:  # Usar Fully Sharded Data Parallel, si se activa.
+fsdp_config:  # Configuración para FSDP, si se usa.
+
+# Tokens especiales
+special_tokens:
+  bos_token: "<s>"  # Token de inicio de secuencia.
+  eos_token: "</s>"  # Token de fin de secuencia.
+  unk_token: "<unk>"  # Token para palabras desconocidas.

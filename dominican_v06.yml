@@ -2,7 +2,7 @@ base_model: mistralai/Mistral-7B-v0.1  # El modelo base preentrenado a afinar.
 model_type: MistralForCausalLM  # Tipo de modelo, aqu   causal para generar texto.
 tokenizer_type: LlamaTokenizer  # Tokenizador para procesar el texto.
 is_mistral_derived_model: true  # Indica si el modelo es una variante de Mistral.
-hub_model_id: Dominican-llm-v0.5-7b  # Identificador del modelo en el hub.
+hub_model_id: Dominican-llm-v0.6-7b  # Identificador del modelo en el hub.
 
 # Configuraciones de carga del modelo
 load_in_8bit: false  # Cargar el modelo en formato de 8 bits, m  s ligero pero menos preciso.
@@ -40,7 +40,7 @@ lora_target_modules:  # M  dulos espec  ficos del modelo a adaptar con LoRA.
   - o_proj
 
 # Configuraciones de Weights & Biases para monitoreo
-wandb_project: Dominican-llm-v0.5-7b  # Nombre del proyecto en Weights & Biases.
+wandb_project: Dominican-llm-v0.6-7b  # Nombre del proyecto en Weights & Biases.
 wandb_entity:  # Entidad en Weights & Biases, si se usa.
 wandb_watch:  # Configuraci  n de monitoreo del modelo en Weights & Biases.
 wandb_name:  # Nombre del run en Weights & Biases.

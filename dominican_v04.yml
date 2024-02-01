@@ -14,7 +14,6 @@ strict: false  # Si es true, asegura que todas las claves del modelo preentrenad
 datasets:
   - path: Arconte/dominican-sharegpt-100  # Ruta al conjunto de datos.
     type: sharegpt  # Tipo de conjunto de datos.
-    conversation: chatml  # Tipo de conversación, asegurarse que no haya espacios extra.
 dataset_prepared_path: Arconte/dominican-sharegpt-100
 val_set_size: 0.1  # Tamaño del conjunto de validación (% del total).
 output_dir: ./qlora-out  # Directorio para guardar los resultados del entrenamiento.

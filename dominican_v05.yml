@@ -14,8 +14,7 @@ datasets:
   - path: json
     data_files: /workspace/axolotl/formateado_sharegpt.jsonl  # Ruta al conjunto de datos.
     type: sharegpt
-chat_template: chatml
-val_set_size: 0  # Tipo de conjunto de datos.
+val_set_size: 0.1  # Tipo de conjunto de datos.
 eval_sample_packing: false # Tama  o del conjunto de validaci  n (% del total).
 output_dir: ./qlora-out  # Directorio para guardar los resultados del entrenamiento.
 
@@ -50,7 +49,7 @@ wandb_log_model:  # Si se registra el modelo en Weights & Biases.
 # Hiperpar  metros de entrenamiento
 gradient_accumulation_steps: 1  # Pasos de acumulaci  n de gradientes para manejar tama  os de lote grandes.
 micro_batch_size: 1  # Tama  o del micro lote, parte del lote total procesado en cada paso.
-num_epochs: 50  # N  mero de   pocas de entrenamiento.
+num_epochs: 25  # N  mero de   pocas de entrenamiento.
 optimizer: adamw_bnb_8bit  # Optimizador, aqu   AdamW con bitsandbytes para 8 bits.
 lr_scheduler: cosine  # Programador de tasa de aprendizaje, aqu   uno que decae siguiendo una funci  n coseno.
 learning_rate: 0.00002  # Tasa de aprendizaje inicial.

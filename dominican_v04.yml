@@ -1,36 +1,37 @@
-# Configuración básica del modelo
 base_model: mistralai/Mistral-7B-v0.1  # El modelo base preentrenado a afinar.
-model_type: MistralForCausalLM  # Tipo de modelo, aquí causal para generar texto.
+model_type: MistralForCausalLM  # Tipo de modelo, aqu   causal para generar texto.
 tokenizer_type: LlamaTokenizer  # Tokenizador para procesar el texto.
 is_mistral_derived_model: true  # Indica si el modelo es una variante de Mistral.
-hub_model_id: Dominican-llm-v0.4-7b  # Identificador del modelo en el hub.
+hub_model_id: Dominican-llm-v0.5-7b  # Identificador del modelo en el hub.
 
 # Configuraciones de carga del modelo
-load_in_8bit: false  # Cargar el modelo en formato de 8 bits, más ligero pero menos preciso.
-load_in_4bit: true  # Cargar en 4 bits, aún más ligero, utilizado para QLoRA.
+load_in_8bit: false  # Cargar el modelo en formato de 8 bits, m  s ligero pero menos preciso.
+load_in_4bit: true  # Cargar en 4 bits, a  n m  s ligero, utilizado para QLoRA.
 strict: false  # Si es true, asegura que todas las claves del modelo preentrenado se carguen.
 
 # Configuraciones del conjunto de datos
 datasets:
-  - path: Arconte/dominican-sharegpt-100  # Ruta al conjunto de datos.
-    type: sharegpt  # Tipo de conjunto de datos.
-dataset_prepared_path: Arconte/dominican-sharegpt-100
-val_set_size: 0.1  # Tamaño del conjunto de validación (% del total).
+  - path: json
+    data_files: /workspace/axolotl/formateado_sharegpt.jsonl  # Ruta al conjunto de datos.
+    type: sharegpt
+chat_template: chatml
+val_set_size: 0  # Tipo de conjunto de datos.
+eval_sample_packing: false # Tama  o del conjunto de validaci  n (% del total).
 output_dir: ./qlora-out  # Directorio para guardar los resultados del entrenamiento.
 
 # Configuraciones del adaptador QLoRA
 adapter: qlora  # Indica el uso de QLoRA para afinamiento eficiente.
 lora_model_dir:  # Directorio del modelo LoRA, si se usa uno preexistente.
-sequence_len: 4068  # Longitud de secuencia máxima.
-sample_packing: true  # Si está activo, empaca muestras para mejorar la eficiencia.
+sequence_len: 4068  # Longitud de secuencia m  xima.
+sample_packing: true  # Si est   activo, empaca muestras para mejorar la eficiencia.
 
-# Hiperparámetros de QLoRA
-lora_r: 32  # Rango de las matrices de adaptación, relacionado con la cantidad de parámetros a entrenar.
-lora_alpha: 16  # Escala de adaptación, controla cuánto se adaptan los pesos del modelo.
-lora_dropout: 0.05  # Tasa de dropout en las capas LoRA para regularización.
+# Hiperpar  metros de QLoRA
+lora_r: 32  # Rango de las matrices de adaptaci  n, relacionado con la cantidad de par  metros a entrenar.
+lora_alpha: 16  # Escala de adaptaci  n, controla cu  nto se adaptan los pesos del modelo.
+lora_dropout: 0.05  # Tasa de dropout en las capas LoRA para regularizaci  n.
 lora_target_linear: true  # Si se enfoca en adaptar las capas lineales del modelo.
-lora_fan_in_fan_out:  # Configuraciones de fan-in/fan-out, vacío indica valores predeterminados.
-lora_target_modules:  # Módulos específicos del modelo a adaptar con LoRA.
+lora_fan_in_fan_out:  # Configuraciones de fan-in/fan-out, vac  o indica valores predeterminados.
+lora_target_modules:  # M  dulos espec  ficos del modelo a adaptar con LoRA.
   - gate_proj
   - down_proj
   - up_proj
@@ -40,45 +41,45 @@ lora_target_modules:  # Módulos específicos del modelo a adaptar con LoRA.
   - o_proj
 
 # Configuraciones de Weights & Biases para monitoreo
-wandb_project: Dominican-llm-v0.4-7b  # Nombre del proyecto en Weights & Biases.
+wandb_project: Dominican-llm-v0.5-7b  # Nombre del proyecto en Weights & Biases.
 wandb_entity:  # Entidad en Weights & Biases, si se usa.
-wandb_watch:  # Configuración de monitoreo del modelo en Weights & Biases.
+wandb_watch:  # Configuraci  n de monitoreo del modelo en Weights & Biases.
 wandb_name:  # Nombre del run en Weights & Biases.
 wandb_log_model:  # Si se registra el modelo en Weights & Biases.
 
-# Hiperparámetros de entrenamiento
-gradient_accumulation_steps: 1  # Pasos de acumulación de gradientes para manejar tamaños de lote grandes.
-micro_batch_size: 1  # Tamaño del micro lote, parte del lote total procesado en cada paso.
-num_epochs: 10  # Número de épocas de entrenamiento.
-optimizer: adamw_bnb_8bit  # Optimizador, aquí AdamW con bitsandbytes para 8 bits.
-lr_scheduler: cosine  # Programador de tasa de aprendizaje, aquí uno que decae siguiendo una función coseno.
+# Hiperpar  metros de entrenamiento
+gradient_accumulation_steps: 1  # Pasos de acumulaci  n de gradientes para manejar tama  os de lote grandes.
+micro_batch_size: 1  # Tama  o del micro lote, parte del lote total procesado en cada paso.
+num_epochs: 50  # N  mero de   pocas de entrenamiento.
+optimizer: adamw_bnb_8bit  # Optimizador, aqu   AdamW con bitsandbytes para 8 bits.
+lr_scheduler: cosine  # Programador de tasa de aprendizaje, aqu   uno que decae siguiendo una funci  n coseno.
 learning_rate: 0.00002  # Tasa de aprendizaje inicial.
 
-# Opciones de precisión y rendimiento
+# Opciones de precisi  n y rendimiento
 train_on_inputs: false  # Si entrena solo en las entradas, sin incluir las etiquetas.
 group_by_length: false  # Si agrupa los datos por longitud para mejorar la eficiencia.
-bf16: true  # Utilizar formato de número flotante Brain Floating Point 16 bits.
+bf16: true  # Utilizar formato de n  mero flotante Brain Floating Point 16 bits.
 fp16: false  # Utilizar formato de 16 bits de punto flotante.
 tf32: false  # Utilizar formato de 32 bits de TensorFloat.
 
 # Funciones avanzadas de entrenamiento
 gradient_checkpointing: true  # Activa el checkpointing de gradientes para ahorrar memoria.
-early_stopping_patience:  # Número de evaluaciones sin mejora antes de detener el entrenamiento.
-resume_from_checkpoint:  # Resumir entrenamiento desde un punto de control específico.
+early_stopping_patience:  # N  mero de evaluaciones sin mejora antes de detener el entrenamiento.
+resume_from_checkpoint:  # Resumir entrenamiento desde un punto de control espec  fico.
 local_rank:  # Rango local para entrenamiento distribuido, si se usa.
-logging_steps: 1  # Frecuencia de pasos para registrar la información del entrenamiento.
+logging_steps: 1  # Frecuencia de pasos para registrar la informaci  n del entrenamiento.
 xformers_attention:
-flash_attention: true  # Usar atención Flash de Xformers para mayor eficiencia.
+flash_attention: true  # Usar atenci  n Flash de Xformers para mayor eficiencia.
 
-# Evaluación y guardado
+# Evaluaci  n y guardado
 warmup_steps: 100
 evals_per_epoch: 4
-save_strategy: epoch  # Estrategia de guardado, aquí por cada época.
-save_steps:  # Número de pasos para guardar el modelo, si se especifica.
+save_strategy: epoch  # Estrategia de guardado, aqu   por cada   poca.
+save_steps:  # N  mero de pasos para guardar el modelo, si se especifica.
 deepspeed:  # Usar DeepSpeed para entrenamiento distribuido y optimizado.
-weight_decay: 0.0  # Decaimiento de peso para regularización.
+weight_decay: 0.0  # Decaimiento de peso para regularizaci  n.
 fsdp:  # Usar Fully Sharded Data Parallel, si se activa.
-fsdp_config:  # Configuración para FSDP, si se usa.
+fsdp_config:  # Configuraci  n para FSDP, si se usa.
 
 # Tokens especiales
 special_tokens:
